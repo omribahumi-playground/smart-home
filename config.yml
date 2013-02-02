@@ -1,0 +1,28 @@
+input:
+  module: rest
+  module_parameters:
+    path: /rest
+    relays: !range 0,7
+
+output:
+  - module: GenericRelayBoard
+    relays: !range 0,7
+    module_parameters:
+      serial:
+        port: /dev/ttyS0
+        baudrate: 9600
+      io_ports: !range 1,8
+      size: 8
+# future modules
+#  - module: firmata
+#    relays: !range 0,9 # map relays 0 .. 9 to this module
+#    module_parameters: # refer to module documentation
+#      serial:
+#        port: /dev/ttyUSB0
+#        baud_rate: 9600
+#      digial_io_ports: !range 2,12
+#  - module: raspberry_pi_io
+#    relays: !range 10,19
+#    module_parameters:
+#      io_ports: !range 0,11
+
