@@ -12,7 +12,7 @@ def main():
     config = yaml.load(open('config.yml'))
     pprint.pprint(config)
 
-    output_modules = OutputContainer()
+    output_container = OutputContainer()
     for module in config['output']:
         if not hasattr(lib.output, module['module']):
             print >>sys.stderr, 'Unable to find module %r' % (module['module'])
@@ -21,10 +21,10 @@ def main():
             module_class = getattr(lib.output, module['module'])
             module_instance = module_class(
                     relays=module['relays'], **module['module_parameters'])
-            output_modules.addModule(module_instance, module['relays'])
+            output_container.addModule(module_instance, module['relays'])
 
-    for relay_id in output_modules.getRelayIds():
-        print relay_id, output_modules.getRelay(relay_id)
+    for relay_id in output_container.getRelayIds():
+        print relay_id, output_container.getRelay(relay_id)
 
 if __name__ == '__main__':
     main()
