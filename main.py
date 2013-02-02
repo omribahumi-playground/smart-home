@@ -4,6 +4,7 @@ import pprint
 import sys
 
 import lib.output
+import lib.input
 from lib import *
 
 YamlExtensions.load()
@@ -23,8 +24,17 @@ def main():
                     relays=module['relays'], **module['module_parameters'])
             output_container.addModule(module_instance, module['relays'])
 
-    for relay_id in output_container.getRelayIds():
-        print relay_id, output_container.getRelay(relay_id)
+    module = config['input']
+    if not hasattr(lib.input, module['module']):
+        print >>sys.stderr, 'Unable to find module %r' % (module['module'])
+        sys.exit(1)
+    else:
+        input_class = getattr(lib.input, module['module'])
+        input_instance = input_class(
+                output_container=output_container,
+                **(module['module_parameters']
+                    if 'module_parameters' in module else {}))
+        input_instance.run()
 
 if __name__ == '__main__':
     main()
