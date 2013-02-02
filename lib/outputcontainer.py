@@ -22,9 +22,11 @@ class OutputContainer(object):
         return self.relay_id_to_module.keys()
 
     def getModule(self, relay_id):
-        return self.relay_id_to_module[relay_id]
+        return self.relay_id_to_module[relay_id] \
+                if relay_id in self.relay_id_to_module else None
 
     def getRelay(self, relay_id):
-        return self.getModule(relay_id).getRelay(relay_id)
+        return self.getModule(relay_id).getRelay(relay_id) \
+                if self.getModule(relay_id) else None
 
 __all__ = ['OutputContainer']
