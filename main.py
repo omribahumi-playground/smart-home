@@ -14,7 +14,7 @@ def main():
 
     output_modules = OutputContainer()
     for module in config['output']:
-        if not module['module'] in dir(lib.output):
+        if not hasattr(lib.output, module['module']):
             print >>sys.stderr, 'Unable to find module %r' % (module['module'])
             sys.exit(1)
         else:
