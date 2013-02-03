@@ -31,7 +31,7 @@ class TornadoRest(InputBase):
                 new_state = handler.request.body
 
                 if not new_state in mapping:
-                    handler.send_error(404)
+                    handler.send_error(400)
                 else:
                     relay = self.output_container.getRelay(id)
                     if not relay:
