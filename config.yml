@@ -7,11 +7,11 @@ input:
 output:
   - module: GenericRelayBoard
     relays:
+      2: window_switch_bypass
+      3: window_down
+      4: window_up
       5: lamp
       6: uv_lamp
-      4: window_up
-      3: window_down
-      2: window_switch_bypass
     module_parameters:
       serial:
         port: /dev/ttyS0
@@ -19,20 +19,30 @@ output:
       board_size: 8
   - module: DummyOutput
     relays:
-      0: DummyOutput0
-      1: DummyOutput1
-      2: DummyOutput2
-      3: DummyOutput3
+      0: DummyOutput0_0
+      1: DummyOutput0_1
+      2: DummyOutput0_2
+      3: DummyOutput0_3
+  - module: DummyOutput
+    relays:
+      4: DummyOutput1_4
+      5: DummyOutput1_5
+      6: DummyOutput1_6
+      7: DummyOutput1_7
 # future modules
-#  - module: firmata
-#    relays: !range 0,9 # map relays 0 .. 9 to this module
-#    module_parameters: # refer to module documentation
+#  - module: Firmata
+#    relays:
+#      # Digital/Analog input/output pin number to relay id mapping
+#      1: arduino_lamp
+#      2: arduino_fan
+#      3: arduino_boiler
+#    module_parameters:
 #      serial:
 #        port: /dev/ttyUSB0
 #        baud_rate: 9600
-#      digial_io_ports: !range 2,12
-#  - module: raspberry_pi_io
-#    relays: !range 10,19
-#    module_parameters:
-#      io_ports: !range 0,11
+#  - module: RaspberryPiGpio
+#    relays:
+#      # RPi GPIO number to relay id mapping
+#      17: rpi_alarm
+#      18: rpi_garage_door
 
