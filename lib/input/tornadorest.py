@@ -25,7 +25,7 @@ class TornadoRest(InputBase):
                     handler.write('on' if relay.get() else 'off')
 
             def post(handler, id=''):
-                mapping = {'on' : True, 'off' : False}
+                mapping = {'on': True, 'off': False, 'toggle': None}
                 new_state = handler.request.body
 
                 if not new_state in mapping:
@@ -34,6 +34,8 @@ class TornadoRest(InputBase):
                     relay = self.output_container.getRelayForRelayId(id)
                     if not relay:
                         handler.send_error(404)
+                    elif new_state == 'toggle':
+                        relay.set(not relay.get())
                     else:
                         relay.set(mapping[new_state])
 
