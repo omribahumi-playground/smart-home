@@ -6,13 +6,23 @@ input:
 
 output:
   - module: GenericRelayBoard
-    relays: !range 0,7
+    relays:
+      5: lamp
+      6: uv_lamp
+      4: window_up
+      3: window_down
+      2: window_switch_bypass
     module_parameters:
       serial:
         port: /dev/ttyS0
         baudrate: 9600
-      io_ports: !range 1,8
-      size: 8
+      board_size: 8
+  - module: DummyOutput
+    relays:
+      0: DummyOutput0
+      1: DummyOutput1
+      2: DummyOutput2
+      3: DummyOutput3
 # future modules
 #  - module: firmata
 #    relays: !range 0,9 # map relays 0 .. 9 to this module

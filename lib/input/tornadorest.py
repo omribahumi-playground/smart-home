@@ -12,28 +12,26 @@ class TornadoRest(InputBase):
                 # this could be done with dictionary comprehension
                 # but my server runs Debian 6.x with python 2.6 :P
                 ret = {}
-                for relay_id in self.output_container.getRelayIds():
-                    ret[relay_id] = self.output_container.getRelay(relay_id).get()
+                for module in self.output_container.getModules():
+                    ret.update(module.getRelaysState())
                 handler.write(json.dumps(ret))
 
         class RelayHandler(tornado.web.RequestHandler):
-            def get(handler, id=-1):
-                id = int(id)
-                relay = self.output_container.getRelay(id)
+            def get(handler, id=''):
+                relay = self.output_container.getRelayForRelayId(id)
                 if not relay:
                     handler.send_error(404)
                 else:
                     handler.write('on' if relay.get() else 'off')
 
-            def post(handler, id=-1):
-                id = int(id)
+            def post(handler, id=''):
                 mapping = {'on' : True, 'off' : False}
                 new_state = handler.request.body
 
                 if not new_state in mapping:
                     handler.send_error(400)
                 else:
-                    relay = self.output_container.getRelay(id)
+                    relay = self.output_container.getRelayForRelayId(id)
                     if not relay:
                         handler.send_error(404)
                     else:
@@ -41,7 +39,7 @@ class TornadoRest(InputBase):
 
         self.application = tornado.web.Application([
             (path + '/status', StatusHandler),
-            (path + '/relay/(?P<id>\d+)', RelayHandler)
+            (path + '/relay/(?P<id>\S+)', RelayHandler)
         ])
         self.application.listen(port)
 

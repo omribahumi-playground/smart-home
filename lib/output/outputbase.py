@@ -1,11 +1,19 @@
 from lib.exceptions import *
 
 class IoPortBase(object):
-    def get(self):
-        raise MethodMissingException(self, 'get')
+    def __init__(self, module, io_port):
+        self.module = module
+        self.io_port = io_port
+
+    def __repr__(self):
+        return '%s(module=%r, io_port=%r, state=%r)' % (
+                self.__class__.__name__, self.module, self.io_port, self.get())
 
     def set(self, new_state):
-        raise MethodMissingException(self, 'set')
+        self.module.setPhysicalIoPortState(self.io_port, new_state)
+
+    def get(self):
+        return self.module.getPhysicalIoPortState(self.io_port)
 
 class Relay(object):
     def __init__(self, relay_id, io_port):
@@ -26,19 +34,35 @@ class Relay(object):
 class OutputBase(object):
     def __init__(self, relays):
         self.relays = relays
-        if len(self.relays) != self.getIoPortsCount():
-            raise InvalidModuleConfigurationException(
-                    'Output module %r has %d relays with %d IO ports' %
-                    (self, len(self.relays), self.getIoPortsCount()))
+
+    def __repr__(self):
+        return '%s(relays=%r)' % (self.__class__.__name__, self.relays)
 
     def getRelay(self, relay_id):
-        io_port_index = self.relays.index(relay_id)
-        return Relay(relay_id, self.getIoPort(io_port_index))
+        return Relay(relay_id, self.getIoPort(
+            dict(zip(self.relays.values(), self.relays.keys()))[relay_id]))
 
-    def getIoPort(self, index):
+    def getRelaysState(self):
+        ret = {}
+        states = self.getPhysicalIoPortsState()
+        for io_port, name in self.relays.iteritems():
+            ret[name] = states[io_port]
+        return ret
+
+    def getIoPort(self, io_port):
         raise MethodMissingException(self, 'getIoPort')
 
     def getIoPortsCount(self):
-        raise MethodMissingException(self, 'getIoPortsCount')
+        return len(self.relays)
+
+    def setPhysicalIoPortState(self, io_port, new_state):
+        raise MethodMissingException(self, 'setPhysicalIoPortState')
+
+    def getPhysicalIoPortState(self, io_port):
+        return self.getPhysicalIoPortsState()[io_port]
+
+    def getPhysicalIoPortsState(self):
+        raise MethodMissingException(self, 'getPhysicalIoPortsState')
+
 
 __all__ = ['IoPortBase', 'Relay', 'OutputBase']

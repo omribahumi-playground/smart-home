@@ -19,10 +19,11 @@ def main():
             print >>sys.stderr, 'Unable to find module %r' % (module['module'])
             sys.exit(1)
         else:
-            module_class = getattr(lib.output, module['module'])
-            module_instance = module_class(
-                    relays=module['relays'], **module['module_parameters'])
-            output_container.addModule(module_instance, module['relays'])
+            output_class = getattr(lib.output, module['module'])
+            output_instance = output_class(
+                    relays=module['relays'], **(module['module_parameters']
+                        if 'module_parameters' in module else {}))
+            output_container.addModule(output_instance, module['relays'])
 
     module = config['input']
     if not hasattr(lib.input, module['module']):
