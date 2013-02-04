@@ -1,4 +1,3 @@
-from yamlextensions import *
 from outputcontainer import *
 
-__all__ = ['YamlExtensions', 'OutputContainer']
+__all__ = ['OutputContainer']

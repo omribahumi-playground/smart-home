@@ -7,8 +7,6 @@ import lib.output
 import lib.input
 from lib import *
 
-YamlExtensions.load()
-
 def main():
     config = yaml.load(open('config.yml'))
     pprint.pprint(config)
