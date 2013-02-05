@@ -1,5 +1,9 @@
 # TornadoRest
 
+## Dependencies
+
+* Python Tornado
+
 ## Description
 
 The TornadoRest module implements a REST API interface using the tornado Python web server.
