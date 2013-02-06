@@ -5,6 +5,7 @@ class InputBase(object):
         self.output_container = output_container
 
     def run(self):
-        raise MethodMissingException(self, 'run')
+        raise NotImplementedError('Module %r doesn\'t implement method %s' %
+            (self, 'run'))
 
 __all__ = ['InputBase']

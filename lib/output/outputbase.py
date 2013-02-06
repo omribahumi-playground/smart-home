@@ -1,5 +1,3 @@
-from lib.exceptions import *
-
 class IoPortBase(object):
     def __init__(self, module, io_port):
         self.module = module
@@ -18,14 +16,15 @@ class IoPortBase(object):
 class Relay(object):
     def __init__(self, relay_id, io_port):
         if not isinstance(io_port, IoPortBase):
-            raise InvalidSubclassException(io_port, IoPortBase)
-        else:
-            self.io_port = io_port
-            self.relay_id = relay_id
+            raise TypeError('%r is not a subclass of %r' %
+                (io_port, IoPortBase))
 
-            # expose io_port get, set methods
-            self.get = io_port.get
-            self.set = io_port.set
+        self.io_port = io_port
+        self.relay_id = relay_id
+
+        # expose io_port get, set methods
+        self.get = io_port.get
+        self.set = io_port.set
 
     def __repr__(self):
         return '%s(relay_id=%r, io_port=%r)' % (self.__class__.__name__,
@@ -50,19 +49,22 @@ class OutputBase(object):
         return ret
 
     def getIoPort(self, io_port):
-        raise MethodMissingException(self, 'getIoPort')
+        raise NotImplementedError('Module %r doesn\'t implement method %s' %
+            (self, 'getIoPort'))
 
     def getIoPortsCount(self):
         return len(self.relays)
 
     def setPhysicalIoPortState(self, io_port, new_state):
-        raise MethodMissingException(self, 'setPhysicalIoPortState')
+        raise NotImplementedError('Module %r doesn\'t implement method %s' %
+             (self, 'setPhysicalIoPortState'))
 
     def getPhysicalIoPortState(self, io_port):
         return self.getPhysicalIoPortsState()[io_port]
 
     def getPhysicalIoPortsState(self):
-        raise MethodMissingException(self, 'getPhysicalIoPortsState')
+        raise NotImplementedError('Module %r doesn\'t implement method %s' %
+            (self, 'getPhysicalIoPortsState'))
 
 
 __all__ = ['IoPortBase', 'Relay', 'OutputBase']

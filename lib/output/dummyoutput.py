@@ -1,4 +1,4 @@
-from outputbase import *
+from outputbase import OutputBase, IoPortBase
 
 class DummyOutputIoPort(IoPortBase):
     pass

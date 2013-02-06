@@ -1,4 +1,4 @@
-from outputbase import *
+from outputbase import OutputBase, IoPortBase
 from serial import Serial
 
 class GenericRelayBoardIoPort(IoPortBase):

@@ -1,3 +1,3 @@
-from outputcontainer import *
+from outputcontainer import OutputContainer
 
 __all__ = ['OutputContainer']

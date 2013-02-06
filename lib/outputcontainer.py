@@ -1,5 +1,5 @@
 from exceptions import *
-from output import *
+from output import OutputBase
 
 class OutputContainer(object):
     def __init__(self):
@@ -8,16 +8,17 @@ class OutputContainer(object):
 
     def addModule(self, module, relays):
         if not isinstance(module, OutputBase):
-            raise InvalidSubclassException(module, OutputBase)
-        else:
-            self.module_to_relay_ids[module] = []
-            for io_port, relay_id in relays.iteritems():
-                if relay_id in self.relay_id_to_module:
-                    raise RelayAlreadyHandledException(relay_id,
-                            self.relay_id_to_module[relay_id])
-                else:
-                    self.relay_id_to_module[relay_id] = module
-                    self.module_to_relay_ids[module].append(relay_id)
+            raise TypeError('%r is not a subclass of %r' %
+                (module, OutputBase))
+
+        self.module_to_relay_ids[module] = []
+        for io_port, relay_id in relays.iteritems():
+            if relay_id in self.relay_id_to_module:
+                raise RelayAlreadyHandledException(relay_id,
+                        self.relay_id_to_module[relay_id])
+            else:
+                self.relay_id_to_module[relay_id] = module
+                self.module_to_relay_ids[module].append(relay_id)
 
     def getModules(self):
         return tuple(self.module_to_relay_ids.keys())

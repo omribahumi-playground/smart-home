@@ -1,3 +1,3 @@
-from genericrelayboard import *
-from dummyoutput import *
+from genericrelayboard import GenericRelayBoard
+from dummyoutput import DummyOutput
 from outputbase import OutputBase
