@@ -89,7 +89,7 @@ class OutputBase(object):
         """Base getPhysicalIoPortState().
         Returns the state of this io_port_id inside self.getPhysicalIoPortsState()
         """
-        return self.getPhysicalIoPortsState()[io_port]
+        return self.getPhysicalIoPortsState()[io_port_id]
 
     @abstractmethod
     def setPhysicalIoPortState(self, io_port_id, new_state):
