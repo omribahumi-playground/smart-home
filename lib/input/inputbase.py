@@ -1,11 +1,14 @@
 from lib.exceptions import *
+from abc import ABCMeta, abstractmethod
 
 class InputBase(object):
+    __metaclass__ = ABCMeta
+
     def __init__(self, output_container):
         self.output_container = output_container
 
+    @abstractmethod
     def run(self):
-        raise NotImplementedError('Module %r doesn\'t implement method %s' %
-            (self, 'run'))
+        pass
 
 __all__ = ['InputBase']

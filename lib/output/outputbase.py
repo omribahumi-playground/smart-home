@@ -1,3 +1,5 @@
+from abc import ABCMeta, abstractmethod
+
 class IoPortBase(object):
     def __init__(self, module, io_port):
         self.module = module
@@ -31,6 +33,8 @@ class Relay(object):
                 self.relay_id, self.io_port)
 
 class OutputBase(object):
+    __metaclass__ = ABCMeta
+
     def __init__(self, relays):
         self.relays = relays
 
@@ -48,23 +52,22 @@ class OutputBase(object):
             ret[name] = states[io_port]
         return ret
 
-    def getIoPort(self, io_port):
-        raise NotImplementedError('Module %r doesn\'t implement method %s' %
-            (self, 'getIoPort'))
-
     def getIoPortsCount(self):
         return len(self.relays)
-
-    def setPhysicalIoPortState(self, io_port, new_state):
-        raise NotImplementedError('Module %r doesn\'t implement method %s' %
-             (self, 'setPhysicalIoPortState'))
 
     def getPhysicalIoPortState(self, io_port):
         return self.getPhysicalIoPortsState()[io_port]
 
-    def getPhysicalIoPortsState(self):
-        raise NotImplementedError('Module %r doesn\'t implement method %s' %
-            (self, 'getPhysicalIoPortsState'))
+    @abstractmethod
+    def setPhysicalIoPortState(self, io_port, new_state):
+        pass
 
+    @abstractmethod
+    def getIoPort(self, io_port):
+        pass
+
+    @abstractmethod
+    def getPhysicalIoPortsState(self):
+        pass
 
 __all__ = ['IoPortBase', 'Relay', 'OutputBase']
