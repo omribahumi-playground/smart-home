@@ -1,9 +1,12 @@
 input:
   module: TornadoRest
   module_parameters:
-    path: /api
     port: 8888
-
+    api:
+      virtual_path: /api
+    static:
+      physical_path: static
+      directory_index: index.html
 output:
   - module: GenericRelayBoard
     relays:

@@ -8,8 +8,11 @@
 
 The TornadoRest module implements a REST API interface using the tornado Python web server.
 The module accepts the following parameters:
-* path - Base path for the REST API. Could be something like /api or /smarthome (default: /)
 * port - HTTP listener port (default: 8080)
+* api.virtual_path - Base path for the REST API. Could be something like /api or /smarthome (default: '')
+* static.virtual_path - Base path for accessing the static files through HTTP (default: '')
+* static.physical_path - Physical path for the static files (default: 'static')
+* static.directory_index - Directory index file (default: 'index.html')
 
 ## REST API
 

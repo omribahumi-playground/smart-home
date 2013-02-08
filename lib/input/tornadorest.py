@@ -4,11 +4,17 @@ import tornado.web
 import json
 
 class TornadoRest(InputBase):
-    def __init__(self, path='', port=8080, *args, **kwargs):
+    def __init__(self, api={}, static=None, port=8080,
+                 *args, **kwargs):
         InputBase.__init__(self, *args, **kwargs)
 
         class StatusHandler(tornado.web.RequestHandler):
+            def compute_etag(handler):
+                return None
+
             def get(handler):
+                handler.set_header('Content-Type', 'application/json')
+
                 # this could be done with dictionary comprehension
                 # but my server runs Debian 6.x with python 2.6 :P
                 ret = {}
@@ -17,6 +23,9 @@ class TornadoRest(InputBase):
                 handler.write(json.dumps(ret))
 
         class RelayHandler(tornado.web.RequestHandler):
+            def compute_etag(handler):
+                return None
+
             def get(handler, id=''):
                 relay = self.output_container.getRelayForRelayId(id)
                 if not relay:
@@ -39,10 +48,24 @@ class TornadoRest(InputBase):
                     else:
                         relay.set(mapping[new_state])
 
-        self.application = tornado.web.Application([
-            (path + '/status', StatusHandler),
-            (path + '/relay/(?P<id>\S+)', RelayHandler)
-        ])
+        handlers = []
+        if api:
+            virtual_path = api.get('virtual_path', '')
+            handlers.extend([
+                (virtual_path + '/status', StatusHandler),
+                (virtual_path + '/relay/(?P<id>\S+)', RelayHandler)
+            ])
+
+        if static:
+            handlers.extend([(
+                static.get('virtual_path', '') + '/?(.*)',
+                tornado.web.StaticFileHandler,
+                {'path' : static.get('physical_path', 'static'),
+                 'default_filename' :
+                        static.get('directory_index', 'index.html')}
+            )])
+
+        self.application = tornado.web.Application(handlers)
         self.application.listen(port)
 
     def run(self):
