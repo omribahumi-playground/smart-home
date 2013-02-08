@@ -18,11 +18,11 @@ class GenericRelayBoard(OutputBase):
         return '%s(board_size=%d, relays=%r, serial=%r)' % (self.__class__.__name__,
                 self.board_size, self.relays, self.serial)
 
-    def getIoPort(self, io_port):
-        return GenericRelayBoardIoPort(self, io_port)
+    def getIoPort(self, io_port_id):
+        return GenericRelayBoardIoPort(self, io_port_id)
 
-    def setPhysicalIoPortState(self, io_port, new_state):
-        self.serial.write("\xff" + chr(io_port) + \
+    def setPhysicalIoPortState(self, io_port_id, new_state):
+        self.serial.write("\xff" + chr(io_port_id) + \
                 ("\x01" if new_state else "\x00"))
 
     def getPhysicalIoPortsState(self):

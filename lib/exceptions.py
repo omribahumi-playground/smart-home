@@ -1,4 +1,7 @@
+"""Smart-Home project Exceptions"""
+
 class SmartHomeException(Exception):
+    """Exceptions base class"""
     pass
 
 class RelayAlreadyHandledException(SmartHomeException):
