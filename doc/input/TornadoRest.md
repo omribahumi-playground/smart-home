@@ -22,8 +22,8 @@ These examples take into consideration that the path is "/" and the port is 8080
 ### Urls
 
 GET /status - returns a JSON representing the current state of the relays in the following format: {"relay_id": true/false, "relay_id2": true/false}  
-GET /relay/<relay_id> - returns a string - on/off - representing the status of the particular relay  
-POST /relay/<relay_id> - on/off/toggle - change the status of the particular relay  
+GET /relay/&lt;relay_id&gt; - returns a string - on/off - representing the status of the particular relay  
+POST /relay/&lt;relay_id&gt; - on/off/toggle - change the status of the particular relay  
 
 ### Examples
 
