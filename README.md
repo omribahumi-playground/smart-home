@@ -29,7 +29,8 @@ There are more modules to come!
 
 ### Output Modules
 * [GenericRelayBoard](doc/output/GenericRelayBoard.md) - Control a generic relay board (purchased on EBay, more information on module doc)
-* [DummyOutput](doc/output/DummyOutput.md) - Dummy relay controlling module for playing with the system and/or development purposes.
+* [DummyOutput](doc/output/DummyOutput.md) - Dummy relay controlling module for playing with the system and/or development purposes
+* [RestOutput](doc/output/RestOutput.md) - Connect multiple smart-home instances together through their REST API
 
 ## Configuration
 
