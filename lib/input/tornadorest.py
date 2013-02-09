@@ -2,6 +2,7 @@ from inputbase import *
 import tornado
 import tornado.web
 import json
+import os
 
 class TornadoRest(InputBase):
     def __init__(self, api={}, static=None, port=8080,
@@ -60,7 +61,10 @@ class TornadoRest(InputBase):
             handlers.extend([(
                 static.get('virtual_path', '') + '/?(.*)',
                 tornado.web.StaticFileHandler,
-                {'path' : static.get('physical_path', 'static'),
+                # when forking, we're calling os.chdir('/') which can
+                # screw things up when using relative paths
+                {'path' :
+                        os.path.abspath(static.get('physical_path', 'static')),
                  'default_filename' :
                         static.get('directory_index', 'index.html')}
             )])
