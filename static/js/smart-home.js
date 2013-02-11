@@ -1,48 +1,39 @@
 var API_BASE_URL = "/api";
 
-function refreshButtons(container)
-{
+function attachEvents() {
+    $('input').change(function() {
+        console.log(this);
+        $.post(
+            API_BASE_URL + '/relay/' + $(this).attr('name'),
+            'toggle',
+            function(){}
+        );
+    });
+}
+
+function loadButton(container) {
     $.get(
         API_BASE_URL + "/status",
         null,
         function(data){
-            for (var relay_id in data)
-            {
-                var button = container.find('button[data-relay-id=' + relay_id + ']');
-
-                // create a button if one does not exist
-                if (!button.length)
-                {
-                    button = $('<button />');
-                    button.addClass('relay');
-                    button.text(relay_id);
-                    button.attr('data-relay-id', relay_id);
-                    button.click(function(){
-                        $.post(
-                            API_BASE_URL + '/relay/' + $(this).attr('data-relay-id'),
-                            'toggle',
-                            function(){
-                                refreshButtons(container);
-                            }
-                        );
-                    });
-                    container.append(button);
-                }
-
+            var html = '';
+            for (var relay_id in data){
                 var relay_status = data[relay_id];
-                if (relay_status)
-                {
-                    button.addClass('relay_on').removeClass('relay_off');
-                }
-                else
-                {
-                    button.addClass('relay_off').removeClass('relay_on');
-                }
+                html += '<li>';
+                html += '<strong>'+relay_id+'</strong>';
+                html += '<div class="relay">';
+                html += '<input type="checkbox" id="r-'+relay_id+'" name="'+relay_id+'" '+(relay_status ? 'checked="checked"' : '')+'/>';
+                html += '<div class="bg"></div>';
+                html += '<label for="r-'+relay_id+'"><span>ON</span><span>OFF</span></label>';
+                html += '</div>';
+                html += '</li>';
             }
+            container.append(html);
+            attachEvents();
         }
     );
 }
 
 $(document).ready(function(){
-    refreshButtons($('#container'));
+    loadButton($('#settings'));
 });
