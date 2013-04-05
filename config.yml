@@ -32,17 +32,30 @@ output:
       5: DummyOutput1_5
       6: DummyOutput1_6
       7: DummyOutput1_7
+  - module: FirmataOutput
+    relays:
+      2: relay_1
+      3: relay_2
+      4: relay_3
+      5: relay_4
+      6: relay_5
+      7: relay_6
+      8: relay_7
+      9: relay_8
+      10: relay_9
+      11: relay_10
+      12: relay_11
+      13: relay_12
+      A0: relay_13
+      A1: relay_14
+      A2: relay_15
+      A3: relay_16
+    module_parameters:
+      reverse: true
+      board_type: 'arduino_mega'
+      port: /dev/ttyACM0
+      baud_rate: 57600
 # future modules
-#  - module: Firmata
-#    relays:
-#      # Digital/Analog input/output pin number to relay id mapping
-#      1: arduino_lamp
-#      2: arduino_fan
-#      3: arduino_boiler
-#    module_parameters:
-#      serial:
-#        port: /dev/ttyUSB0
-#        baud_rate: 9600
 #  - module: RaspberryPiGpio
 #    relays:
 #      # RPi GPIO number to relay id mapping

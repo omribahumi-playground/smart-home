@@ -77,6 +77,7 @@ def main():
             os.setsid()
             os.umask(0)
 
+    print 'Invoking input module ...'
     input_instance.run()
 
 if __name__ == '__main__':
